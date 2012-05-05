@@ -110,6 +110,16 @@ window.onload = function() {
 
 	Crafty.scene("main", function() {
 		generateWorld();
+		
+		Crafty.c('HUD', {
+			init: function() {
+				this
+				.attr({w: 100, h: 20, x: 400, y: 120})
+				.text("Grassland")
+				.css({"text-align": "left"});
+				return this;
+			}	
+		});
 
 		Crafty.c('Hero', {
 			init: function() {
@@ -174,5 +184,6 @@ window.onload = function() {
 			.attr({x: 352, y: 576, z: 1});
 		crew3 = Crafty.e("2D, Canvas, player, Hero, Animate, Collision")
 			.attr({x: 320, y: 544, z: 1});
+		HUD = Crafty.e("2D, DOM, Text, HUD");
 	});
 };
