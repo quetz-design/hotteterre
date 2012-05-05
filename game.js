@@ -1,10 +1,10 @@
 window.onload = function() {
 	//start crafty
-	Crafty.init(1600, 1280);
+	Crafty.init(800, 640);
 	Crafty.canvas.init();
 
 	//turn the sprite map into usable components
-	Crafty.sprite(64, "images/sprite.png", {
+	Crafty.sprite(32, "images/sprite.png", {
 		grass1: [0,0],
 		grass2: [1,0],
 		grass3: [2,0],
@@ -23,12 +23,12 @@ window.onload = function() {
 			for(var j = 0; j < 20; j++) {
 				grassType = Crafty.math.randomInt(1, 4);
 				Crafty.e("2D, Canvas, grass"+grassType)
-					.attr({x: i * 64, y: j * 64});
+					.attr({x: i * 32, y: j * 32});
 
 				//1/50 chance of drawing a flower and only within the bushes
 				if(i > 0 && i < 19 && j > 0 && j < 19 && Crafty.math.randomInt(0, 50) > 49) {
 					Crafty.e("2D, DOM, flower, solid, SpriteAnimation")
-						.attr({x: i * 64, y: j * 64})
+						.attr({x: i * 32, y: j * 32})
 						.animate("wind", 0, 1, 3)
 						.bind("EnterFrame", function() {
 							if(!this.isPlaying())
@@ -41,18 +41,18 @@ window.onload = function() {
 		//create the bushes along the x-axis which will form the boundaries
 		for(var i = 0; i < 20; i++) {
 			Crafty.e("2D, Canvas, wall_top, solid, bush"+Crafty.math.randomInt(1,2))
-				.attr({x: i * 64, y: 0, z: 2});
+				.attr({x: i * 32, y: 0, z: 2});
 			Crafty.e("2D, DOM, wall_bottom, solid, bush"+Crafty.math.randomInt(1,2))
-				.attr({x: i * 64, y: 1216, z: 2});
+				.attr({x: i * 32, y: 608, z: 2});
 		}
 
 		//create the bushes along the y-axis
 		//we need to start one more and one less to not overlap the previous bushes
 		for(var i = 1; i < 19; i++) {
 			Crafty.e("2D, DOM, wall_left, solid, bush"+Crafty.math.randomInt(1,2))
-				.attr({x: 0, y: i * 64, z: 2});
+				.attr({x: 0, y: i * 32, z: 2});
 			Crafty.e("2D, Canvas, wall_right, solid, bush"+Crafty.math.randomInt(1,2))
-				.attr({x: 1216, y: i * 64, z: 2});
+				.attr({x: 608, y: i * 32, z: 2});
 		}
 	}
 
@@ -89,19 +89,19 @@ window.onload = function() {
 						function (direction) {
 							if (direction.x < 0) {
 								if (!this.isPlaying("walk_left"))
-									this.stop().animate("walk_left", 40, -1);
+									this.stop().animate("walk_left", 20, -1);
 							}
 							if (direction.x > 0) {
 								if (!this.isPlaying("walk_right"))
-									this.stop().animate("walk_right", 40, -1);
+									this.stop().animate("walk_right", 20, -1);
 							}
 							if (direction.y < 0) {
 								if (!this.isPlaying("walk_up"))
-									this.stop().animate("walk_up", 40, -1);
+									this.stop().animate("walk_up", 20, -1);
 							}
 							if (direction.y > 0) {
 								if (!this.isPlaying("walk_down"))
-									this.stop().animate("walk_down", 40, -1);
+									this.stop().animate("walk_down", 20, -1);
 							}
 							if(!direction.x && !direction.y) {
 								this.stop();
