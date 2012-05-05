@@ -80,6 +80,33 @@ window.onload = function() {
 			'rootL',
 			'rootR',
 		];
+		this.description = {
+			grass1:'Grassland',
+			grass2:'Grassland',
+			grass3:'Grassland',
+			grass4:'Grassland',
+			grass5:'Grassland',
+			lakeLT:'Lake',
+			lakeLM:'Lake',
+			lakeLB:'Lake',
+			lakeMT:'Lake',
+			lakeMM:'Lake',
+			lakeMB:'Lake',
+			lakeRT:'Lake',
+			lakeRM:'Lake',
+			lakeRB:'Lake',
+			bushLT:'Bush',
+			bushLM:'Bush',
+			bushLB:'Bush',
+			bushMT:'Bush',
+			bushMM:'Bush',
+			bushMB:'Bush',
+			bushRT:'Bush',
+			bushRM:'Bush',
+			bushRB:'Bush',
+			rootL:'Stump',
+			rootR:'Stump'
+		};
 		this.map = [
 			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
 			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
@@ -147,7 +174,7 @@ window.onload = function() {
 
 			title = Crafty.e("2D, DOM, Text, HUD_Land")
 				.attr({x: x + 128, y: y + 12})
-				.text(land)
+				.text(landMap.description[land])
 				.css({"text-align": "left", "font-family": "'Economica', sans-serif"});
 
 			return new HUD({base:base, title:title, _type:'land'});
