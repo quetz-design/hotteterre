@@ -345,7 +345,7 @@ window.onload = function() {
 
 		Crafty.c("Cursor", {
 			init: function() {
-				this.requires('Multiway');
+				this.requires('RightControls');
 				this.requires('Keyboard');
 				this.requires('Locatable');
 
@@ -375,11 +375,6 @@ window.onload = function() {
 						}
 					}
 				});
-			},
-
-			rightControls: function(speed) {
-				this.multiway(speed, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180})
-				return this;
 			},
 
 			pushSpace: function() {
