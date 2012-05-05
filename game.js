@@ -195,6 +195,12 @@ window.onload = function() {
 						}
 					});
 				return this;
+			},
+			
+			movePosition: function() {
+				Crafty.e("2D, Canvas, Color")
+				.color('#FF0000')
+				.attr({x:player._x, y:player._y, w:32, h:32, alpha:0.5, z:0});
 			}
 
 		});
@@ -234,6 +240,11 @@ window.onload = function() {
 					if(this.isDown('SPACE')){
 						target.pushSpace();
 					}
+					if(this.isDown('ENTER')) {
+						if(this._x == player._x && this._y == player._y) {
+							player.movePosition();
+						}
+					}
 				});
 			},
 
@@ -251,8 +262,8 @@ window.onload = function() {
 			},
 			
 			pushSpace: function() {
-				this.attr({x:player.x, y:player.y, z:1});
-			}
+				this.attr({x:player._x, y:player._y, z:1});
+			},
 		});
 
 		//create our player entity with some premade components
