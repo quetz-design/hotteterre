@@ -52,6 +52,69 @@ window.onload = function() {
 		['Imoen',				'imoen', '200', '200', '0', '0', '3', '5', '2', '2'],
 	];
 
+	var HUDBuilder = {
+		describeLand: function(x, y, land) {
+			base = Crafty.e("2D, DOM, Image")
+				.attr({x: x, y: y})
+				.image("images/hudbox.png")
+
+			title = Crafty.e("2D, DOM, Text")
+				.attr({x: x + 128, y: y + 12})
+				.text(land)
+				.css({"text-align": "left", "font-family": "'Economica', sans-serif"});
+		},
+
+		describeCharacter: function(x, y, name) {
+			base = Crafty.e("2D, DOM, Image")
+				.attr({x: x, y: y})
+				.image("images/hudbox.png")
+
+			var record = character.filter(
+				function (e, idx, ar) {
+					return e[1] == name;
+				})[0];
+
+			portlait = Crafty.e("2D, DOM, " + record[1])
+				.attr({x: x + 16, y: y + 12});
+
+			title = Crafty.e("2D, DOM, Text")
+				.attr({x: x + 128, y: y + 12, w: 400})
+				.text(record[0])
+				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "30px"});
+
+			hp = Crafty.e("2D, DOM, Text")
+				.attr({x: x + 128, y: y + 56, w: 200})
+				.text("HP: " + record[2] + "/" + record[3])
+				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
+
+			mp = Crafty.e("2D, DOM, Text")
+				.attr({x: x + 128, y: y + 56 + 24, w: 200})
+				.text("MP: " + record[4] + "/" + record[5])
+				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
+
+			atk = Crafty.e("2D, DOM, Text")
+				.attr({x: x + 128 + 128, y: y + 56, w: 200})
+				.text("ATK: " + record[6])
+				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
+
+			def = Crafty.e("2D, DOM, Text")
+				.attr({x: x + 128 + 128, y: y + 56 + 24, w: 200})
+				.text("DEF: " + record[7])
+				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
+
+			mov = Crafty.e("2D, DOM, Text")
+				.attr({x: x + 128 + 128 + 80, y: y + 56, w: 200})
+				.text("MOV: " + record[8])
+				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
+
+			agi = Crafty.e("2D, DOM, Text")
+				.attr({x: x + 128 + 128 + 80, y: y + 56 + 24, w: 200})
+				.text("AGI: " + record[9])
+				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
+
+		}
+	}
+
 	//method to randomy generate the map
 	function generateWorld() {
 		var spriteMap = [
@@ -231,7 +294,7 @@ window.onload = function() {
 						Crafty.trigger('Cursor_Moved', {x:fieldX, y:fieldY});
 					}
 				});
-				
+
 				this.bind('KeyDown', function() {
 					if(this.isDown('SPACE')){
 						target.pushSpace();
@@ -256,7 +319,7 @@ window.onload = function() {
 			getFieldY: function() {
 				return Math.round(this.y / 32);
 			},
-			
+
 			pushSpace: function() {
 				this.attr({x:player._x, y:player._y, z:1});
 			},
@@ -281,69 +344,6 @@ window.onload = function() {
 		cursor.disableControl();
 
 		cursor.enableControl();
-
-		var HUDBuilder = {
-			describeLand: function(x, y, land) {
-				base = Crafty.e("2D, DOM, Image")
-					.attr({x: x, y: y})
-					.image("images/hudbox.png")
-
-				title = Crafty.e("2D, DOM, Text")
-					.attr({x: x + 128, y: y + 12})
-					.text(land)
-					.css({"text-align": "left", "font-family": "'Economica', sans-serif"});
-			},
-
-			describeCharacter: function(x, y, name) {
-				base = Crafty.e("2D, DOM, Image")
-					.attr({x: x, y: y})
-					.image("images/hudbox.png")
-
-				var record = character.filter(
-					function (e, idx, ar) {
-						return e[1] == name;
-					})[0];
-
-				portlait = Crafty.e("2D, DOM, " + record[1])
-					.attr({x: x + 16, y: y + 12});
-
-				title = Crafty.e("2D, DOM, Text")
-					.attr({x: x + 128, y: y + 12, w: 400})
-					.text(record[0])
-					.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "30px"});
-
-				hp = Crafty.e("2D, DOM, Text")
-					.attr({x: x + 128, y: y + 56, w: 200})
-					.text("HP: " + record[2] + "/" + record[3])
-					.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
-
-				mp = Crafty.e("2D, DOM, Text")
-					.attr({x: x + 128, y: y + 56 + 24, w: 200})
-					.text("MP: " + record[4] + "/" + record[5])
-					.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
-
-				atk = Crafty.e("2D, DOM, Text")
-					.attr({x: x + 128 + 128, y: y + 56, w: 200})
-					.text("ATK: " + record[6])
-					.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
-
-				def = Crafty.e("2D, DOM, Text")
-					.attr({x: x + 128 + 128, y: y + 56 + 24, w: 200})
-					.text("DEF: " + record[7])
-					.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
-
-				mov = Crafty.e("2D, DOM, Text")
-					.attr({x: x + 128 + 128 + 80, y: y + 56, w: 200})
-					.text("MOV: " + record[8])
-					.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
-
-				agi = Crafty.e("2D, DOM, Text")
-					.attr({x: x + 128 + 128 + 80, y: y + 56 + 24, w: 200})
-					.text("AGI: " + record[9])
-					.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
-
-			}
-		}
 
 		//var hud = HUDBuilder.describeLand(180, 20, "Grassland");
 		var hud = HUDBuilder.describeCharacter(180, 20, "keldorn");
