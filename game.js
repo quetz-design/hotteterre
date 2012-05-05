@@ -267,7 +267,7 @@ window.onload = function() {
 		})
 
 
-		Crafty.c('Hero', {
+		Crafty.c('Hero', {			
 			init: function() {
 					//setup animations
 					this.requires("SpriteAnimation, Collision, Locatable")
@@ -322,13 +322,15 @@ window.onload = function() {
 				
 				this.bind('KeyDown', function() {
 					if(this.isDown('ENTER')) {
-						
 						cursor.enableControl();
 						this.disableControl();
 					}
 				});
+			},
+			
+			profile: function(dataArray) {
+				return this.attr({name:dataArray[0]});
 			}
-
 		});
 
 		Crafty.c("RightControls", {
@@ -386,20 +388,25 @@ window.onload = function() {
 
 		player = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
 			.attr({x: 320, y: 576, z: 1})
-			.rightControls(1);
+			.rightControls(1)
+			.profile(character[0]);
 		crew1 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
 			.attr({x: 288, y: 576, z: 1})
-			.rightControls(1);
+			.rightControls(1)
+			.profile(character[1]);
 		crew2 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
 			.attr({x: 352, y: 576, z: 1})
-			.rightControls(1);
+			.rightControls(1)
+			.profile(character[2]);
 		crew3 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
 			.attr({x: 320, y: 544, z: 1})
-			.rightControls(1);
+			.rightControls(1)
+			.profile(character[3]);
 		cursor = Crafty.e("2D, Canvas, cursor, Cursor")
 			.attr({x: 320, y: 576, z: 1})
 			.rightControls(4);
 
+		console.log(player.name);
 		player.disableControl();
 		crew1.disableControl();
 		crew2.disableControl();
