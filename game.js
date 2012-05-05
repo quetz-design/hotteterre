@@ -1,7 +1,7 @@
 // -*- js-indent-level: 8 -*-
 window.onload = function() {
 	//start crafty
-	Crafty.init(800, 640);
+	Crafty.init(640, 640);
 	Crafty.canvas.init();
 
 	//turn the sprite map into usable components
@@ -141,6 +141,14 @@ window.onload = function() {
 		getFieldY: function(px) {
 			return Math.round(px / 32);
 		},
+
+		isInside: function(px, py) {
+			var x = Locator.getFieldX(px);
+			var y = Locator.getFieldY(py);
+			if (x >= 0 && x < 20 && y >= 0 && y < 20)
+				return true;
+			return false;
+		}
 	}
 
 	var HUD = function(prop) {
@@ -437,15 +445,20 @@ window.onload = function() {
 				this.bind('Moved', function(from) {
 					var fieldX = target.getFieldX();
 					var fieldY = target.getFieldY();
-					if (fieldX != target.currentFieldX || fieldY != target.currentFieldY) {
-						target.currentFieldX = fieldX;
-						target.currentFieldY = fieldY;
+					if (Locator.isInside(this.x, this.y)) {
+						if (fieldX != target.currentFieldX || fieldY != target.currentFieldY) {
+							target.currentFieldX = fieldX;
+							target.currentFieldY = fieldY;
 
-						name = locationMap.lookup(fieldX, fieldY)
-						if (name != '_undefined_')
-							Crafty.trigger('Cursor_Moved_Character', {x:fieldX, y:fieldY, name:name});
-						else
-							Crafty.trigger('Cursor_Moved_Land', {x:fieldX, y:fieldY, type:landMap.spriteMap[landMap.map[fieldY][fieldX]]});
+							name = locationMap.lookup(fieldX, fieldY)
+							if (name != '_undefined_')
+								Crafty.trigger('Cursor_Moved_Character', {x:fieldX, y:fieldY, name:name});
+							else
+								Crafty.trigger('Cursor_Moved_Land', {x:fieldX, y:fieldY, type:landMap.spriteMap[landMap.map[fieldY][fieldX]]});
+						}
+					}
+					else {
+						this.attr({x: from.x, y:from.y});
 					}
 				});
 
