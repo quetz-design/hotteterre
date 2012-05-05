@@ -171,6 +171,10 @@ window.onload = function() {
 				.attr({w: 100, h: 20, x: 400, y: 120})
 				.text("Grassland")
 				.css({"text-align": "left"});
+
+				this.bind("Cursor_Moved", function(field) {
+					this.text("Field: " + field.x + ", " + field.y);
+				})
 				return this;
 			}
 		});
@@ -229,6 +233,40 @@ window.onload = function() {
 
 		});
 
+		Crafty.c("Cursor", {
+			init: function() {
+				this.requires('Multiway');
+
+
+				var target = this;
+				this.currentFieldX = this.getFieldX();
+				this.currentFieldY = this.getFieldY();
+
+				this.bind('Moved', function(from) {
+					var fieldX = target.getFieldX();
+					var fieldY = target.getFieldY();
+					if (fieldX != target.currentFieldX || fieldY != target.currentFieldY) {
+						target.currentFieldX = fieldX;
+						target.currentFieldY = fieldY;
+						Crafty.trigger('Cursor_Moved', {x:fieldX, y:fieldY});
+					}
+				});
+			},
+
+			rightControls: function(speed) {
+				this.multiway(speed, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180})
+				return this;
+			},
+
+			getFieldX: function() {
+				return Math.round(this.x / 32);
+			},
+
+			getFieldY: function() {
+				return Math.round(this.y / 32);
+			}
+		});
+
 		//create our player entity with some premade components
 
 		player = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
@@ -240,7 +278,7 @@ window.onload = function() {
 			.attr({x: 352, y: 576, z: 1});
 		crew3 = Crafty.e("2D, Canvas, player, Hero, Animate, Collision")
 			.attr({x: 320, y: 544, z: 1});
-		cursor = Crafty.e("2D, Canvas, cursor, RightControls")
+		cursor = Crafty.e("2D, Canvas, cursor, Cursor")
 			.attr({x: 320, y: 576, z: 1})
 			.rightControls(4);
 
