@@ -250,7 +250,7 @@ window.onload = function() {
 		generateWorld();
 
 		LocationMap = function () {
-			var map = {};
+			this.map = {};
 
 			this.lookup = function (x, y) {
 				for (var k in this.map) {
@@ -353,7 +353,6 @@ window.onload = function() {
 						}
 						this.markLocation();
 					});
-				this.markLocation();
 				return this;
 			},
 
@@ -382,6 +381,7 @@ window.onload = function() {
 			markLocation: function() {
 				if (this.name)
 					locationMap.mark(this.name, this.getFieldX(this.x), this.getFieldY(this.y));
+				return this;
 			}
 		});
 
@@ -445,15 +445,19 @@ window.onload = function() {
 
 		player = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
 			.attr({x: 320, y: 576, z: 1, name:'keldorn'})
+			.markLocation()
 			.rightControls(1);
 		crew1 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
 			.attr({x: 288, y: 576, z: 1, name:'valygar'})
+			.markLocation()
 			.rightControls(1);
 		crew2 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
 			.attr({x: 352, y: 576, z: 1, name:'edwin'})
+			.markLocation()
 			.rightControls(1);
 		crew3 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
 			.attr({x: 320, y: 544, z: 1, name:'imoen'})
+			.markLocation()
 			.rightControls(1);
 		cursor = Crafty.e("2D, Canvas, cursor, Cursor")
 			.attr({x: 320, y: 576, z: 1})
