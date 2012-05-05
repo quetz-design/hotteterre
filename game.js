@@ -36,14 +36,14 @@ window.onload = function() {
 	Crafty.sprite(32, "images/sprite.png", {
 		player: [0,3]
 	});
-	
+
 	Crafty.sprite(96, "images/portraits.png", {
 		keldorn: [0, 0],
 		valygar: [0, 1],
 		edwin: [0, 2],
 		imoen: [0, 3],
 	});
-	
+
 	//[Name, HP, maxHP, MP, maxMP, ATK, DEF, MOV, AGI]
 	var character = [
 		['Keldorn Firecam',		'keldorn', '100', '100', '10', '10', '3', '3', '4', '5'],
@@ -111,19 +111,6 @@ window.onload = function() {
 				var entity = map[j][i];
 				Crafty.e("2D, Canvas, "+ spriteMap[entity])
 					.attr({x: i * 32, y: j * 32});
-
-/*
-				//1/50 chance of drawing a flower and only within the bushes
-				if(i > 0 && i < 19 && j > 0 && j < 19 && Crafty.math.randomInt(0, 50) > 49) {
-					Crafty.e("2D, DOM, flower, solid, SpriteAnimation")
-						.attr({x: i * 32, y: j * 32})
-						.animate("wind", 0, 1, 3)
-						.bind("EnterFrame", function() {
-							if(!this.isPlaying())
-								this.animate("wind", 80);
-						});
-				}
-*/
 			}
 		}
 
@@ -133,15 +120,6 @@ window.onload = function() {
 				.attr({x: i * 32, y: 0, z: 2});
 			Crafty.e("2D, DOM, wall_bottom, solid, bush"+Crafty.math.randomInt(1,2))
 				.attr({x: i * 32, y: 608, z: 2});
-		}
-
-		//create the bushes along the y-axis
-		//we need to start one more and one less to not overlap the previous bushes
-		for(var i = 1; i < 19; i++) {
-			Crafty.e("2D, DOM, wall_left, solid, bush"+Crafty.math.randomInt(1,2))
-				.attr({x: 0, y: i * 32, z: 2});
-			Crafty.e("2D, Canvas, wall_right, solid, bush"+Crafty.math.randomInt(1,2))
-				.attr({x: 608, y: i * 32, z: 2});
 		}
 	}
 
@@ -171,6 +149,10 @@ window.onload = function() {
 				.attr({w: 100, h: 20, x: 400, y: 120})
 				.text("Grassland")
 				.css({"text-align": "left"});
+
+				this.bind("Cursor_Moved", function(field) {
+					this.text("Field: " + field.x + ", " + field.y);
+				})
 				return this;
 			}
 		});
@@ -229,6 +211,40 @@ window.onload = function() {
 
 		});
 
+		Crafty.c("Cursor", {
+			init: function() {
+				this.requires('Multiway');
+
+
+				var target = this;
+				this.currentFieldX = this.getFieldX();
+				this.currentFieldY = this.getFieldY();
+
+				this.bind('Moved', function(from) {
+					var fieldX = target.getFieldX();
+					var fieldY = target.getFieldY();
+					if (fieldX != target.currentFieldX || fieldY != target.currentFieldY) {
+						target.currentFieldX = fieldX;
+						target.currentFieldY = fieldY;
+						Crafty.trigger('Cursor_Moved', {x:fieldX, y:fieldY});
+					}
+				});
+			},
+
+			rightControls: function(speed) {
+				this.multiway(speed, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180})
+				return this;
+			},
+
+			getFieldX: function() {
+				return Math.round(this.x / 32);
+			},
+
+			getFieldY: function() {
+				return Math.round(this.y / 32);
+			}
+		});
+
 		//create our player entity with some premade components
 
 		player = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
@@ -240,7 +256,7 @@ window.onload = function() {
 			.attr({x: 352, y: 576, z: 1});
 		crew3 = Crafty.e("2D, Canvas, player, Hero, Animate, Collision")
 			.attr({x: 320, y: 544, z: 1});
-		cursor = Crafty.e("2D, Canvas, cursor, RightControls")
+		cursor = Crafty.e("2D, Canvas, cursor, Cursor")
 			.attr({x: 320, y: 576, z: 1})
 			.rightControls(4);
 
