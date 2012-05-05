@@ -149,7 +149,7 @@ window.onload = function() {
 
 	Crafty.scene("main", function() {
 		generateWorld();
-		
+
 		Crafty.c('HUD', {
 			init: function() {
 				this
@@ -157,7 +157,7 @@ window.onload = function() {
 				.text("Grassland")
 				.css({"text-align": "left"});
 				return this;
-			}	
+			}
 		});
 
 		Crafty.c('Hero', {
@@ -216,8 +216,9 @@ window.onload = function() {
 
 		//create our player entity with some premade components
 
-		player = Crafty.e("2D, Canvas, player, Hero, Animate, Collision")
-			.attr({x: 320, y: 576, z: 1});
+		player = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
+			.attr({x: 320, y: 576, z: 1})
+			.rightControls(1);
 		crew1 = Crafty.e("2D, Canvas, player, Hero, Animate, Collision")
 			.attr({x: 288, y: 576, z: 1});
 		crew2 = Crafty.e("2D, Canvas, player, Hero, Animate, Collision")
@@ -227,6 +228,12 @@ window.onload = function() {
 		cursor = Crafty.e("2D, Canvas, cursor, RightControls")
 			.attr({x: 320, y: 576, z: 1})
 			.rightControls(4);
+
+		player.disableControl();
+		cursor.disableControl();
+
+		cursor.enableControl();
+
 		HUD = Crafty.e("2D, DOM, Text, HUD");
 	});
 };
