@@ -39,9 +39,9 @@ window.onload = function() {
 
 	Crafty.sprite(96, "images/portraits.png", {
 		keldorn: [0, 0],
-		valygar: [0, 1],
-		edwin: [0, 2],
-		imoen: [0, 3],
+		valygar: [1, 0],
+		edwin: [2, 0],
+		imoen: [3, 0],
 	});
 
 	//[Name, HP, maxHP, MP, maxMP, ATK, DEF, MOV, AGI]
