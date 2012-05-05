@@ -257,9 +257,25 @@ window.onload = function() {
 			},
 			
 			movePosition: function() {
-				Crafty.e("2D, Canvas, Color")
-				.color('#FF0000')
-				.attr({x:player._x, y:player._y, w:32, h:32, alpha:0.5, z:0});
+				this.requires('Keyboard');
+				
+				var move = 4;
+				
+				for(i= -move; i <= move; i++) {
+					for (j= -move; j <= move; j++) {
+						Crafty.e("2D, Canvas, Color")
+						.color('#FF0000')
+						.attr({x:player._x+(32*j), y:player._y+(32*i), w:32, h:32, alpha:0.5, z:0});
+					}		
+				}
+				
+				this.bind('KeyDown', function() {
+					if(this.isDown('ENTER')) {
+						
+						cursor.enableControl();
+						this.disableControl();
+					}
+				});
 			}
 
 		});
@@ -302,6 +318,8 @@ window.onload = function() {
 					if(this.isDown('ENTER')) {
 						if(this._x == player._x && this._y == player._y) {
 							player.movePosition();
+							player.enableControl();
+							this.disableControl();
 						}
 					}
 				});
