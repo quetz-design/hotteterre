@@ -36,6 +36,21 @@ window.onload = function() {
 	Crafty.sprite(32, "images/sprite.png", {
 		player: [0,3]
 	});
+	
+	Crafty.sprite(96, "images/portraits.png", {
+		keldorn: [0, 0],
+		valygar: [0, 1],
+		edwin: [0, 2],
+		imoen: [0, 3],
+	});
+	
+	//[Name, HP, maxHP, MP, maxMP, ATK, DEF, MOV, AGI]
+	var character = [
+		['Keldorn Firecam',		'keldorn', '100', '100', '10', '10', '3', '3', '4', '5'],
+		['Valygar Corlatha',	'valygar', '75', '80', '15', '15', '2', '3', '3', '3'],
+		['Edwin Odessieron',	'edwin', '50', '50', '30', '30', '1', '3', '2', '4'],
+		['Imoen',				'imoen', '200', '200', '0', '0', '3', '5', '2', '2'],
+	];
 
 	//method to randomy generate the map
 	function generateWorld() {
