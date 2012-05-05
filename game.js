@@ -255,7 +255,7 @@ window.onload = function() {
 					});
 				return this;
 			},
-			
+
 			movePosition: function() {
 				this.requires('Keyboard');
 				
@@ -348,17 +348,23 @@ window.onload = function() {
 		player = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
 			.attr({x: 320, y: 576, z: 1})
 			.rightControls(1);
-		crew1 = Crafty.e("2D, Canvas, player, Hero, Animate, Collision")
-			.attr({x: 288, y: 576, z: 1});
-		crew2 = Crafty.e("2D, Canvas, player, Hero, Animate, Collision")
-			.attr({x: 352, y: 576, z: 1});
-		crew3 = Crafty.e("2D, Canvas, player, Hero, Animate, Collision")
-			.attr({x: 320, y: 544, z: 1});
+		crew1 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
+			.attr({x: 288, y: 576, z: 1})
+			.rightControls(1);
+		crew2 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
+			.attr({x: 352, y: 576, z: 1})
+			.rightControls(1);
+		crew3 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
+			.attr({x: 320, y: 544, z: 1})
+			.rightControls(1);
 		cursor = Crafty.e("2D, Canvas, cursor, Cursor")
 			.attr({x: 320, y: 576, z: 1})
 			.rightControls(4);
 
 		player.disableControl();
+		crew1.disableControl();
+		crew2.disableControl();
+		crew3.disableControl();
 		cursor.disableControl();
 
 		cursor.enableControl();
