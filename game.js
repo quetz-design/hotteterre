@@ -52,6 +52,60 @@ window.onload = function() {
 		['Imoen',				'imoen', '200', '200', '0', '0', '3', '5', '2', '2'],
 	];
 
+	var LandMap = function() {
+		this.spriteMap = [
+			'grass1',
+			'grass2',
+			'grass3',
+			'grass4',
+			'grass5',
+			'lakeLT',
+			'lakeLM',
+			'lakeLB',
+			'lakeMT',
+			'lakeMM',
+			'lakeMB',
+			'lakeRT',
+			'lakeRM',
+			'lakeRB',
+			'bushLT',
+			'bushLM',
+			'bushLB',
+			'bushMT',
+			'bushMM',
+			'bushMB',
+			'bushRT',
+			'bushRM',
+			'bushRB',
+			'rootL',
+			'rootR',
+		];
+		this.map = [
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
+			[ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
+			[ 4, 4,23,24, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,17,17,17,20, 0,],
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,15,18,18,18,21, 1,],
+			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,15,18,18,18,21, 2,],
+			[ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,15,18,18,18,21, 3,],
+			[ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,16,19,19,19,22, 4,],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
+			[ 8, 8, 8, 8,11, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
+			[ 9, 9, 9, 9,12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
+			[ 9, 9, 9, 9,12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+			[ 9, 9, 9, 9,12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+			[ 9, 9, 9, 9,12, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
+			[ 9, 9, 9, 9,12, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
+			[ 9, 9, 9, 9,12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
+		];
+	};
+
+	landMap = new LandMap();
+
 	var Locator = {
 		getFieldX: function(px) {
 			return Math.round(px / 32);
@@ -72,7 +126,8 @@ window.onload = function() {
 
 		this.dismiss = function() {
 			for (var k in this.prop) {
-				this.prop[k].destroy();
+				if (this.prop[k].destroy)
+					this.prop[k].destroy();
 			}
 		}
 
@@ -80,7 +135,12 @@ window.onload = function() {
 	}
 
 	var HUDBuilder = {
-		describeLand: function(x, y, land) {
+		X: 180,
+		Y: 20,
+
+		describeLand: function(land) {
+			var x = HUDBuilder.X;
+			var y = HUDBuilder.Y;
 			base = Crafty.e("2D, DOM, Image")
 				.attr({x: x, y: y})
 				.image("images/hudbox.png")
@@ -90,10 +150,12 @@ window.onload = function() {
 				.text(land)
 				.css({"text-align": "left", "font-family": "'Economica', sans-serif"});
 
-			return new HUD({base:base, title:title});
+			return new HUD({base:base, title:title, _type:'land'});
 		},
 
-		describeCharacter: function(x, y, name) {
+		describeCharacter: function(name) {
+			var x = HUDBuilder.X;
+			var y = HUDBuilder.Y;
 			base = Crafty.e("2D, DOM, Image")
 				.attr({x: x, y: y})
 				.image("images/hudbox.png")
@@ -141,68 +203,19 @@ window.onload = function() {
 				.text("AGI: " + record[9])
 				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
 
-			return new HUD({base:base, portlait:portlait, title:title, hp:hp, mp:mp, atk:atk, def:def, mov:mov, agi:agi});
+			return new HUD({base:base, portlait:portlait, title:title, hp:hp, mp:mp, atk:atk, def:def, mov:mov, agi:agi, _type:'character', _name:name});
 		}
 	}
 
 	//method to randomy generate the map
 	function generateWorld() {
-		var spriteMap = [
-			'grass1',
-			'grass2',
-			'grass3',
-			'grass4',
-			'grass5',
-			'lakeLT',
-			'lakeLM',
-			'lakeLB',
-			'lakeMT',
-			'lakeMM',
-			'lakeMB',
-			'lakeRT',
-			'lakeRM',
-			'lakeRB',
-			'bushLT',
-			'bushLM',
-			'bushLB',
-			'bushMT',
-			'bushMM',
-			'bushMB',
-			'bushRT',
-			'bushRM',
-			'bushRB',
-			'rootL',
-			'rootR',
-		];
-		var map = [
-			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
-			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
-			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
-			[ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
-			[ 4, 4,23,24, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
-			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,14,17,17,17,20, 0,],
-			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,15,18,18,18,21, 1,],
-			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,15,18,18,18,21, 2,],
-			[ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,15,18,18,18,21, 3,],
-			[ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,16,19,19,19,22, 4,],
-			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
-			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
-			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
-			[ 8, 8, 8, 8,11, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
-			[ 9, 9, 9, 9,12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
-			[ 9, 9, 9, 9,12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
-			[ 9, 9, 9, 9,12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
-			[ 9, 9, 9, 9,12, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
-			[ 9, 9, 9, 9,12, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
-			[ 9, 9, 9, 9,12, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
-		];
 
 		//generate the grass along the x-axis
 		for(var i = 0; i < 20; i++) {
 			//generate the grass along the y-axis
 			for(var j = 0; j < 20; j++) {
-				var entity = map[j][i];
-				Crafty.e("2D, Canvas, "+ spriteMap[entity])
+				var entity = landMap.map[j][i];
+				Crafty.e("2D, Canvas, "+ landMap.spriteMap[entity])
 					.attr({x: i * 32, y: j * 32});
 			}
 		}
@@ -236,12 +249,40 @@ window.onload = function() {
 	Crafty.scene("main", function() {
 		generateWorld();
 
+		LocationMap = function () {
+			var map = {};
+
+			this.lookup = function (x, y) {
+				for (var k in this.map) {
+					if (this.map[k].x == x && this.map[k].y == y)
+						return k;
+				}
+				return '_undefined_';
+			}
+
+			this.mark = function (name, x, y) {
+				if (!this.map[name])
+					this.map[name] = {};
+				this.map[name].x = x;
+				this.map[name].y = y;
+ 			}
+		}
+
+		locationMap = new LocationMap();
+
 		Crafty.c('HUD_Land', {
 			init: function() {
 
-				this.bind("Cursor_Moved", function(field) {
-					this.text("Field: " + field.x + ", " + field.y);
-				})
+				this.bind("Cursor_Moved_Land", function(field) {
+					if (this.__HUD__._type != field.type) {
+						this.__HUD__.dismiss();
+						HUDBuilder.describeLand(field.type);
+					}
+				});
+				this.bind("Cursor_Moved_Character", function(field) {
+					this.__HUD__.dismiss();
+					HUDBuilder.describeCharacter(field.name);
+				});
 				return this;
 			}
 		});
@@ -249,9 +290,16 @@ window.onload = function() {
 		Crafty.c('HUD_Character', {
 			init: function() {
 
-				this.bind("Cursor_Moved", function(field) {
-					this.text("Field: " + field.x + ", " + field.y);
-				})
+				this.bind("Cursor_Moved_Land", function(field) {
+					this.__HUD__.dismiss();
+					HUDBuilder.describeLand(field.type);
+				});
+				this.bind("Cursor_Moved_Character", function(field) {
+					if (this.__HUD__._name != field.name) {
+						this.__HUD__.dismiss();
+						HUDBuilder.describeCharacter(field.name);
+					}
+				});
 				return this;
 			}
 		});
@@ -303,32 +351,38 @@ window.onload = function() {
 						if(this.hit('solid')){
 							this.attr({x: from.x, y:from.y});
 						}
+						this.markLocation();
 					});
+				this.markLocation();
 				return this;
 			},
 
 			movePosition: function() {
 				this.requires('Keyboard');
-				
+
 				var move = 4;
-				
+
 				for(i= -move; i <= move; i++) {
 					for (j= -move; j <= move; j++) {
 						Crafty.e("2D, Canvas, Color")
 						.color('#FF0000')
 						.attr({x:player._x+(32*j), y:player._y+(32*i), w:32, h:32, alpha:0.5, z:0});
-					}		
+					}
 				}
-				
+
 				this.bind('KeyDown', function() {
 					if(this.isDown('ENTER')) {
-						
+
 						cursor.enableControl();
 						this.disableControl();
 					}
 				});
-			}
+			},
 
+			markLocation: function() {
+				if (this.name)
+					locationMap.mark(this.name, this.getFieldX(this.x), this.getFieldY(this.y));
+			}
 		});
 
 		Crafty.c("RightControls", {
@@ -359,7 +413,12 @@ window.onload = function() {
 					if (fieldX != target.currentFieldX || fieldY != target.currentFieldY) {
 						target.currentFieldX = fieldX;
 						target.currentFieldY = fieldY;
-						Crafty.trigger('Cursor_Moved', {x:fieldX, y:fieldY});
+
+						name = locationMap.lookup(fieldX, fieldY)
+						if (name != '_undefined_')
+							Crafty.trigger('Cursor_Moved_Character', {x:fieldX, y:fieldY, name:name});
+						else
+							Crafty.trigger('Cursor_Moved_Land', {x:fieldX, y:fieldY, type:landMap.spriteMap[landMap.map[fieldY][fieldX]]});
 					}
 				});
 
@@ -385,16 +444,16 @@ window.onload = function() {
 		//create our player entity with some premade components
 
 		player = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
-			.attr({x: 320, y: 576, z: 1})
+			.attr({x: 320, y: 576, z: 1, name:'keldorn'})
 			.rightControls(1);
 		crew1 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
-			.attr({x: 288, y: 576, z: 1})
+			.attr({x: 288, y: 576, z: 1, name:'valygar'})
 			.rightControls(1);
 		crew2 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
-			.attr({x: 352, y: 576, z: 1})
+			.attr({x: 352, y: 576, z: 1, name:'edwin'})
 			.rightControls(1);
 		crew3 = Crafty.e("2D, Canvas, player, Hero, RightControls, Animate, Collision")
-			.attr({x: 320, y: 544, z: 1})
+			.attr({x: 320, y: 544, z: 1, name:'imoen'})
 			.rightControls(1);
 		cursor = Crafty.e("2D, Canvas, cursor, Cursor")
 			.attr({x: 320, y: 576, z: 1})
@@ -408,8 +467,7 @@ window.onload = function() {
 
 		cursor.enableControl();
 
-		//var hud = HUDBuilder.describeLand(180, 20, "Grassland");
-		var hud = HUDBuilder.describeCharacter(180, 20, "keldorn");
-
+		//hud = HUDBuilder.describeLand("Grassland");
+		hud = HUDBuilder.describeCharacter("keldorn");
 	});
 };
