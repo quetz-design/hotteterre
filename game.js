@@ -214,7 +214,7 @@ window.onload = function() {
 		Crafty.c("Cursor", {
 			init: function() {
 				this.requires('Multiway');
-
+				this.requires('Keyboard');
 
 				var target = this;
 				this.currentFieldX = this.getFieldX();
@@ -227,6 +227,12 @@ window.onload = function() {
 						target.currentFieldX = fieldX;
 						target.currentFieldY = fieldY;
 						Crafty.trigger('Cursor_Moved', {x:fieldX, y:fieldY});
+					}
+				});
+				
+				this.bind('KeyDown', function() {
+					if(this.isDown('SPACE')){
+						target.pushSpace();
 					}
 				});
 			},
@@ -242,6 +248,10 @@ window.onload = function() {
 
 			getFieldY: function() {
 				return Math.round(this.y / 32);
+			},
+			
+			pushSpace: function() {
+				this.attr({x:player.x, y:player.y, z:1});
 			}
 		});
 
