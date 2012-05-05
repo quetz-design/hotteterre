@@ -36,14 +36,14 @@ window.onload = function() {
 	Crafty.sprite(32, "images/sprite.png", {
 		player: [0,3]
 	});
-	
+
 	Crafty.sprite(96, "images/portraits.png", {
 		keldorn: [0, 0],
 		valygar: [0, 1],
 		edwin: [0, 2],
 		imoen: [0, 3],
 	});
-	
+
 	//[Name, HP, maxHP, MP, maxMP, ATK, DEF, MOV, AGI]
 	var character = [
 		['Keldorn Firecam',		'keldorn', '100', '100', '10', '10', '3', '3', '4', '5'],
@@ -111,19 +111,6 @@ window.onload = function() {
 				var entity = map[j][i];
 				Crafty.e("2D, Canvas, "+ spriteMap[entity])
 					.attr({x: i * 32, y: j * 32});
-
-/*
-				//1/50 chance of drawing a flower and only within the bushes
-				if(i > 0 && i < 19 && j > 0 && j < 19 && Crafty.math.randomInt(0, 50) > 49) {
-					Crafty.e("2D, DOM, flower, solid, SpriteAnimation")
-						.attr({x: i * 32, y: j * 32})
-						.animate("wind", 0, 1, 3)
-						.bind("EnterFrame", function() {
-							if(!this.isPlaying())
-								this.animate("wind", 80);
-						});
-				}
-*/
 			}
 		}
 
@@ -133,15 +120,6 @@ window.onload = function() {
 				.attr({x: i * 32, y: 0, z: 2});
 			Crafty.e("2D, DOM, wall_bottom, solid, bush"+Crafty.math.randomInt(1,2))
 				.attr({x: i * 32, y: 608, z: 2});
-		}
-
-		//create the bushes along the y-axis
-		//we need to start one more and one less to not overlap the previous bushes
-		for(var i = 1; i < 19; i++) {
-			Crafty.e("2D, DOM, wall_left, solid, bush"+Crafty.math.randomInt(1,2))
-				.attr({x: 0, y: i * 32, z: 2});
-			Crafty.e("2D, Canvas, wall_right, solid, bush"+Crafty.math.randomInt(1,2))
-				.attr({x: 608, y: i * 32, z: 2});
 		}
 	}
 
