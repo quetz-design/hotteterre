@@ -131,7 +131,7 @@ window.onload = function() {
 
 		//create our player entity with some premade components
 		player = Crafty.e("2D, Canvas, player, RightControls, Hero, Animate, Collision")
-			.attr({x: 160, y: 144, z: 1})
+			.attr({x: 320, y: 288, z: 1})
 			.rightControls(1);
 	});
 };
