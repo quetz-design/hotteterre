@@ -1,30 +1,64 @@
+// -*- js-indent-level: 8 -*-
 window.onload = function() {
 	//start crafty
 	Crafty.init(800, 640);
 	Crafty.canvas.init();
 
 	//turn the sprite map into usable components
-	Crafty.sprite(32, "images/sprite.png", {
+	Crafty.sprite(32, "images/Woodland_ground.png", {
 		grass1: [0,0],
-		grass2: [1,0],
-		grass3: [2,0],
-		grass4: [3,0],
-		flower: [0,1],
-		bush1: [0,2],
-		bush2: [1,2],
+		grass2: [0,1],
+		grass3: [0,2],
+		grass4: [0,3],
+		grass5: [0,4],
+		grass6: [0,5],
+		grass7: [0,6],
+	});
+	Crafty.sprite(32, "images/sprite.png", {
 		player: [0,3]
 	});
 
 	//method to randomy generate the map
 	function generateWorld() {
+		var spriteMap = [
+			'grass1',
+			'grass2',
+			'grass3',
+			'grass4',
+			'grass5',
+		];
+		var map = [
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
+			[ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
+			[ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
+			[ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
+			[ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
+			[ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
+			[ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
+			[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,],
+			[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+			[ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,],
+			[ 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,],
+			[ 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,],
+		];
+
 		//generate the grass along the x-axis
 		for(var i = 0; i < 20; i++) {
 			//generate the grass along the y-axis
 			for(var j = 0; j < 20; j++) {
-				grassType = Crafty.math.randomInt(1, 4);
-				Crafty.e("2D, Canvas, grass"+grassType)
+				var entity = map[j][i];
+				Crafty.e("2D, Canvas, "+ spriteMap[entity])
 					.attr({x: i * 32, y: j * 32});
 
+/*
 				//1/50 chance of drawing a flower and only within the bushes
 				if(i > 0 && i < 19 && j > 0 && j < 19 && Crafty.math.randomInt(0, 50) > 49) {
 					Crafty.e("2D, DOM, flower, solid, SpriteAnimation")
@@ -35,6 +69,7 @@ window.onload = function() {
 								this.animate("wind", 80);
 						});
 				}
+*/
 			}
 		}
 
