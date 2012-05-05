@@ -52,6 +52,16 @@ window.onload = function() {
 		['Imoen',				'imoen', '200', '200', '0', '0', '3', '5', '2', '2'],
 	];
 
+	var Locator = {
+		getFieldX: function(px) {
+			return Math.round(px / 32);
+		},
+
+		getFieldY: function(px) {
+			return Math.round(px / 32);
+		},
+	}
+
 	var HUD = function(prop) {
 		this.init = function(prop) {
 			this.prop = prop;
@@ -246,11 +256,21 @@ window.onload = function() {
 			}
 		});
 
+		Crafty.c('Locatable', {
+			getFieldX: function() {
+				return Locator.getFieldX(this.x);
+			},
+
+			getFieldY: function() {
+				return Locator.getFieldY(this.y);
+			}
+		})
+
 
 		Crafty.c('Hero', {
 			init: function() {
 					//setup animations
-					this.requires("SpriteAnimation, Collision")
+					this.requires("SpriteAnimation, Collision, Locatable")
 					.animate("walk_left", 6, 3, 8)
 					.animate("walk_right", 9, 3, 11)
 					.animate("walk_up", 3, 3, 5)
@@ -327,6 +347,7 @@ window.onload = function() {
 			init: function() {
 				this.requires('Multiway');
 				this.requires('Keyboard');
+				this.requires('Locatable');
 
 				var target = this;
 				this.currentFieldX = this.getFieldX();
@@ -359,14 +380,6 @@ window.onload = function() {
 			rightControls: function(speed) {
 				this.multiway(speed, {UP_ARROW: -90, DOWN_ARROW: 90, RIGHT_ARROW: 0, LEFT_ARROW: 180})
 				return this;
-			},
-
-			getFieldX: function() {
-				return Math.round(this.x / 32);
-			},
-
-			getFieldY: function() {
-				return Math.round(this.y / 32);
 			},
 
 			pushSpace: function() {
