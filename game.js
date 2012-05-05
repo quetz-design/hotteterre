@@ -18,7 +18,7 @@ window.onload = function() {
 	//method to randomy generate the map
 	function generateWorld() {
 		//generate the grass along the x-axis
-		for(var i = 0; i < 25; i++) {
+		for(var i = 0; i < 20; i++) {
 			//generate the grass along the y-axis
 			for(var j = 0; j < 20; j++) {
 				grassType = Crafty.math.randomInt(1, 4);
@@ -26,7 +26,7 @@ window.onload = function() {
 					.attr({x: i * 64, y: j * 64});
 
 				//1/50 chance of drawing a flower and only within the bushes
-				if(i > 0 && i < 24 && j > 0 && j < 19 && Crafty.math.randomInt(0, 50) > 49) {
+				if(i > 0 && i < 19 && j > 0 && j < 19 && Crafty.math.randomInt(0, 50) > 49) {
 					Crafty.e("2D, DOM, flower, solid, SpriteAnimation")
 						.attr({x: i * 64, y: j * 64})
 						.animate("wind", 0, 1, 3)
@@ -39,7 +39,7 @@ window.onload = function() {
 		}
 
 		//create the bushes along the x-axis which will form the boundaries
-		for(var i = 0; i < 25; i++) {
+		for(var i = 0; i < 20; i++) {
 			Crafty.e("2D, Canvas, wall_top, solid, bush"+Crafty.math.randomInt(1,2))
 				.attr({x: i * 64, y: 0, z: 2});
 			Crafty.e("2D, DOM, wall_bottom, solid, bush"+Crafty.math.randomInt(1,2))
@@ -52,7 +52,7 @@ window.onload = function() {
 			Crafty.e("2D, DOM, wall_left, solid, bush"+Crafty.math.randomInt(1,2))
 				.attr({x: 0, y: i * 64, z: 2});
 			Crafty.e("2D, Canvas, wall_right, solid, bush"+Crafty.math.randomInt(1,2))
-				.attr({x: 1536, y: i * 64, z: 2});
+				.attr({x: 1216, y: i * 64, z: 2});
 		}
 	}
 
