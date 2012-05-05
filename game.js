@@ -52,16 +52,35 @@ window.onload = function() {
 		['Imoen',				'imoen', '200', '200', '0', '0', '3', '5', '2', '2'],
 	];
 
+	var HUD = function(prop) {
+		this.init = function(prop) {
+			this.prop = prop;
+			for (var k in this.prop) {
+				this.prop[k].__HUD__ = this;
+			}
+		},
+
+		this.dismiss = function() {
+			for (var k in this.prop) {
+				this.prop[k].destroy();
+			}
+		}
+
+		this.init(prop);
+	}
+
 	var HUDBuilder = {
 		describeLand: function(x, y, land) {
 			base = Crafty.e("2D, DOM, Image")
 				.attr({x: x, y: y})
 				.image("images/hudbox.png")
 
-			title = Crafty.e("2D, DOM, Text")
+			title = Crafty.e("2D, DOM, Text, HUD_Land")
 				.attr({x: x + 128, y: y + 12})
 				.text(land)
 				.css({"text-align": "left", "font-family": "'Economica', sans-serif"});
+
+			return new HUD({base:base, title:title});
 		},
 
 		describeCharacter: function(x, y, name) {
@@ -77,7 +96,7 @@ window.onload = function() {
 			portlait = Crafty.e("2D, DOM, " + record[1])
 				.attr({x: x + 16, y: y + 12});
 
-			title = Crafty.e("2D, DOM, Text")
+			title = Crafty.e("2D, DOM, Text, HUD_Character")
 				.attr({x: x + 128, y: y + 12, w: 400})
 				.text(record[0])
 				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "30px"});
@@ -112,6 +131,7 @@ window.onload = function() {
 				.text("AGI: " + record[9])
 				.css({"text-align": "left", "font-family": "'Economica', sans-serif", "font-size": "18px"});
 
+			return new HUD({base:base, portlait:portlait, title:title, hp:hp, mp:mp, atk:atk, def:def, mov:mov, agi:agi});
 		}
 	}
 
@@ -206,7 +226,7 @@ window.onload = function() {
 	Crafty.scene("main", function() {
 		generateWorld();
 
-		Crafty.c('HUD', {
+		Crafty.c('HUD_Land', {
 			init: function() {
 
 				this.bind("Cursor_Moved", function(field) {
@@ -215,6 +235,17 @@ window.onload = function() {
 				return this;
 			}
 		});
+
+		Crafty.c('HUD_Character', {
+			init: function() {
+
+				this.bind("Cursor_Moved", function(field) {
+					this.text("Field: " + field.x + ", " + field.y);
+				})
+				return this;
+			}
+		});
+
 
 		Crafty.c('Hero', {
 			init: function() {
